@@ -3,22 +3,13 @@
 ```mermaid
 erDiagram
 
-    CATEGORY ||--o{ PRODUCT : contains
-
-    BRANCH ||--o{ EMPLOYEE : employs
-
+    CATEGORY ||--o{ PRODUCT : has
+    BRANCH ||--o{ EMPLOYEE : has
     CUSTOMER ||--o{ ORDERS : places
-
     EMPLOYEE ||--o{ ORDERS : handles
-
-    BRANCH ||--o{ ORDERS : receives
-
-    ORDERS ||--|{ ORDER_DETAIL : contains
-
-    PRODUCT ||--o{ ORDER_DETAIL : included_in
-
+    ORDERS ||--o{ ORDER_DETAIL : contains
+    PRODUCT ||--o{ ORDER_DETAIL : included
     ORDERS ||--o{ PAYMENT : has
-
 
     CATEGORY {
         INT category_id PK
@@ -53,10 +44,9 @@ erDiagram
 
     ORDERS {
         INT order_id PK
-        DATE order_date
+        DATETIME order_date
         INT customer_id FK
         INT employee_id FK
-        INT branch_id FK
         VARCHAR status
     }
 
@@ -73,6 +63,18 @@ erDiagram
         INT order_id FK
         VARCHAR payment_method
         DECIMAL payment_amount
-        DATE payment_date
+        DATETIME payment_date
     }
 ```
+
+## Гол холбоосууд
+
+- Category 1:N Product
+- Branch 1:N Employee
+- Customer 1:N Orders
+- Employee 1:N Orders
+- Orders 1:N OrderDetail
+- Product 1:N OrderDetail
+- Orders 1:N Payment
+
+`Orders` болон `Product`-ийн M:N холбоог `OrderDetail` хүснэгтээр шийдсэн.

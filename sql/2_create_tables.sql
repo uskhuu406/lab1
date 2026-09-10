@@ -17,20 +17,6 @@ CREATE TABLE Customer (
     phone VARCHAR(20)
 );
 
-CREATE TABLE Product (
-    product_id INT PRIMARY KEY AUTO_INCREMENT,
-    product_name VARCHAR(100) NOT NULL,
-    category_id INT NOT NULL,
-    price DECIMAL(10,2) NOT NULL,
-    stock_quantity INT NOT NULL DEFAULT 0,
-
-    FOREIGN KEY (category_id)
-        REFERENCES Category(category_id),
-
-    CHECK (price > 0),
-    CHECK (stock_quantity >= 0)
-);
-
 CREATE TABLE Employee (
     employee_id INT PRIMARY KEY AUTO_INCREMENT,
     employee_name VARCHAR(100) NOT NULL,
@@ -40,53 +26,54 @@ CREATE TABLE Employee (
         REFERENCES Branch(branch_id)
 );
 
+CREATE TABLE Product (
+    product_id INT PRIMARY KEY AUTO_INCREMENT,
+    product_name VARCHAR(100) NOT NULL,
+    category_id INT NOT NULL,
+    price DECIMAL(10,2) NOT NULL CHECK (price > 0),
+    stock_quantity INT NOT NULL DEFAULT 0 CHECK (stock_quantity >= 0),
+
+    FOREIGN KEY (category_id)
+        REFERENCES Category(category_id)
+);
+
 CREATE TABLE Orders (
     order_id INT PRIMARY KEY AUTO_INCREMENT,
-    order_date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    customer_id INT NOT NULL,
-    employee_id INT NOT NULL,
-    branch_id INT NOT NULL,
-    status VARCHAR(50) NOT NULL,
+    order_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+    customer_id INT,
+    employee_id INT,
+    status VARCHAR(50),
 
     FOREIGN KEY (customer_id)
         REFERENCES Customer(customer_id),
 
     FOREIGN KEY (employee_id)
-        REFERENCES Employee(employee_id),
-
-    FOREIGN KEY (branch_id)
-        REFERENCES Branch(branch_id)
+        REFERENCES Employee(employee_id)
 );
 
 CREATE TABLE OrderDetail (
     order_detail_id INT PRIMARY KEY AUTO_INCREMENT,
     order_id INT NOT NULL,
     product_id INT NOT NULL,
-    quantity INT NOT NULL,
-    unit_price DECIMAL(10,2) NOT NULL,
+    quantity INT NOT NULL CHECK (quantity > 0),
+    unit_price DECIMAL(10,2) NOT NULL CHECK (unit_price > 0),
 
     FOREIGN KEY (order_id)
         REFERENCES Orders(order_id),
 
     FOREIGN KEY (product_id)
-        REFERENCES Product(product_id),
-
-    CHECK (quantity > 0),
-    CHECK (unit_price > 0)
+        REFERENCES Product(product_id)
 );
 
 CREATE TABLE Payment (
     payment_id INT PRIMARY KEY AUTO_INCREMENT,
     order_id INT NOT NULL,
-    payment_method VARCHAR(50) NOT NULL,
-    payment_amount DECIMAL(10,2) NOT NULL,
-    payment_date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    payment_method VARCHAR(50),
+    payment_amount DECIMAL(10,2) NOT NULL CHECK (payment_amount > 0),
+    payment_date DATETIME DEFAULT CURRENT_TIMESTAMP,
 
     FOREIGN KEY (order_id)
-        REFERENCES Orders(order_id),
-
-    CHECK (payment_amount > 0)
+        REFERENCES Orders(order_id)
 );
-USE fast_food_db;
 
 SHOW TABLES;
