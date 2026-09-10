@@ -1,5 +1,6 @@
 USE fast_food_db;
 
+
 -- 1. Data storage, retrieval, and update
 
 INSERT INTO Category (category_name)
@@ -47,7 +48,7 @@ WHERE product_id = 1;
 
 
 -- 4. Concurrency control services
--- Энийг 2 тусдаа session дээр туршина.
+-- Энэ хэсгийг 2 тусдаа session дээр туршина.
 
 -- Session 1:
 START TRANSACTION;
@@ -57,7 +58,7 @@ FROM Product
 WHERE product_id = 1
 FOR UPDATE;
 
--- Session 2 дээр ажиллуулах:
+-- Session 2 дээр тусад нь ажиллуулах:
 -- UPDATE Product
 -- SET stock_quantity = stock_quantity - 1
 -- WHERE product_id = 1;
@@ -117,12 +118,13 @@ SHOW PROCESSLIST;
 
 SHOW CREATE TABLE Product;
 
--- CHECK constraint турших жишээ
--- Доорх query зориуд error өгөх ёстой.
+-- CHECK constraint турших:
+-- Доорх query-г тусад нь сонгож Run хийнэ.
+-- Зориуд error өгөх ёстой.
 
-UPDATE Product
-SET price = -5000
-WHERE product_id = 1;
+-- UPDATE Product
+-- SET price = -5000
+-- WHERE product_id = 1;
 
 
 -- 9. Services to promote data independence

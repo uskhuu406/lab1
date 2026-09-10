@@ -3,19 +3,19 @@ USE fast_food_db;
 CREATE TABLE Category (
     category_id INT PRIMARY KEY AUTO_INCREMENT,
     category_name VARCHAR(100) NOT NULL
-);
+) ENGINE=InnoDB;
 
 CREATE TABLE Branch (
     branch_id INT PRIMARY KEY AUTO_INCREMENT,
     branch_name VARCHAR(100) NOT NULL,
     address VARCHAR(255)
-);
+) ENGINE=InnoDB;
 
 CREATE TABLE Customer (
     customer_id INT PRIMARY KEY AUTO_INCREMENT,
     customer_name VARCHAR(100) NOT NULL,
     phone VARCHAR(20)
-);
+) ENGINE=InnoDB;
 
 CREATE TABLE Employee (
     employee_id INT PRIMARY KEY AUTO_INCREMENT,
@@ -24,7 +24,7 @@ CREATE TABLE Employee (
 
     FOREIGN KEY (branch_id)
         REFERENCES Branch(branch_id)
-);
+) ENGINE=InnoDB;
 
 CREATE TABLE Product (
     product_id INT PRIMARY KEY AUTO_INCREMENT,
@@ -35,13 +35,13 @@ CREATE TABLE Product (
 
     FOREIGN KEY (category_id)
         REFERENCES Category(category_id)
-);
+) ENGINE=InnoDB;
 
 CREATE TABLE Orders (
     order_id INT PRIMARY KEY AUTO_INCREMENT,
     order_date DATETIME DEFAULT CURRENT_TIMESTAMP,
-    customer_id INT,
-    employee_id INT,
+    customer_id INT NOT NULL,
+    employee_id INT NOT NULL,
     status VARCHAR(50),
 
     FOREIGN KEY (customer_id)
@@ -49,7 +49,7 @@ CREATE TABLE Orders (
 
     FOREIGN KEY (employee_id)
         REFERENCES Employee(employee_id)
-);
+) ENGINE=InnoDB;
 
 CREATE TABLE OrderDetail (
     order_detail_id INT PRIMARY KEY AUTO_INCREMENT,
@@ -63,7 +63,7 @@ CREATE TABLE OrderDetail (
 
     FOREIGN KEY (product_id)
         REFERENCES Product(product_id)
-);
+) ENGINE=InnoDB;
 
 CREATE TABLE Payment (
     payment_id INT PRIMARY KEY AUTO_INCREMENT,
@@ -74,6 +74,6 @@ CREATE TABLE Payment (
 
     FOREIGN KEY (order_id)
         REFERENCES Orders(order_id)
-);
+) ENGINE=InnoDB;
 
 SHOW TABLES;
